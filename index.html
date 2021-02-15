@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Weather App - Sicily</title>
+    <link rel="stylesheet" href="assets/normalize.css">
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+    <main>
+        <h1>Today's Weather in Sicily</h1>
+        <h2>Daily updated weather forecasts for every District in Sicily</h2>
+        <label>Choose a district:
+            <select id="district_name" name="district-name" required>
+              <option value="NDS" selected>No District Selected</option>
+              <option value="AG">Agrigento</option>
+              <option value="CL">Caltanissetta</option>
+              <option value="CT">Catania</option>
+              <option value="EN">Enna</option>
+              <option value="ME">Messina</option>
+              <option value="PA">Palermo</option>
+              <option value="RG">Ragusa</option>
+              <option value="SR">Siracusa</option>
+              <option value="TP">Trapani</option>
+            </select>
+        </label>
+        <div class="choosed_district"></div>
+        <div class="district_card_wrapper"></section>
+    </main>
+<script src="assets/index.js"></script>    
+</body>
+</html>
