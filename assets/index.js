@@ -17,7 +17,18 @@ const state = {
         Rg: null,
         Sr: null,
         Tp: null
-    } 
+    },
+    districtsId:{
+        Ag: "2525763",
+        Cl: "2525447",
+        Ct: "2525068",
+        En: "2524818",
+        Me: "2524169",
+        Pa: "2523918",
+        Rg: "2523649",
+        Sr: "2523082",
+        Tp: "2522875"
+    }, 
 }
 
 //creazione della utility per l'URL di base
@@ -27,9 +38,12 @@ function getConstantUrl(cityId) {
 
 //creazione della utility che chiama i dati e gestisce l'errore nel caricamento
 async function getData(url) {
+    const weatherData = [];
     try {
         const response = await fetch (url);
         const result = await response.json();
+        state.results = result
+        console.log(state.results)
         if (!response.ok){
             throw result;
         }
@@ -39,87 +53,43 @@ async function getData(url) {
     }
 }
 
-//CREAZIONE DELLE FUNZIONI PER OTTENERE IL METEO DI OGNI PROVINCIA
-
-//creazione della funzione per ottenere il meteo della provincia di Agrigento
-async function getAgWeather() {
-    const AgWeatherId = getConstantUrl ("2525763");
-    const AgWeatherCard = await getData(AgWeatherId);
+//creazione della funzione utility per ottenere il meteo delle province
+async function getWeather(districtId) {
+    const WeatherId = getConstantUrl (districtId);
+    const WeatherCard = await getData(WeatherId);
     
-    state.districts.Ag = AgWeatherCard.results
-    return AgWeatherCard;
+    return WeatherCard;
 }
 
-
-//creazione della funzione per ottenere il meteo della provincia di Caltanissetta
-async function getClWeather() {
-    const ClWeatherId = getConstantUrl ("2525447");
-    const ClWeatherCard = await getData(ClWeatherId);
-    
-    state.districts.Cl = ClWeatherCard.results
-    return ClWeatherCard;
+//Creazione della funzione che restituisce tutti gli oggetti della chiamata fetch (cioè tutti gli oggetti di tutte le province)
+async function getAllWeatherDistObject(){
+    for (const key in state.districtsId) {
+        state.districts[key] = await getWeather(state.districtsId[key])
+    }
 }
 
-//creazione della funzione per ottenere il meteo della provincia di Catania
-async function getCtWeather() {
-    const CtWeatherId = getConstantUrl ("2525068");
-    const CtWeatherCard = await getData(CtWeatherId);
-    
-    state.districts.Ct = CtWeatherCard.results
-    return CtWeatherCard;
-}
+//Creazione della funzione che, al cambio del valore della select, mi restituisce l'oggetto relativo a ciascuna provincia
+districtSelect.addEventListener('change', (event) => {
+    const target = event.target.value
 
-//creazione della funzione per ottenere il meteo della provincia di Enna
-async function getEnWeather() {
-    const EnWeatherId = getConstantUrl ("2524818");
-    const EnWeatherCard = await getData(EnWeatherId);
+    for (const key in state.districtsId) {
+        if (key===target) {
+            state.districts.key = getWeather(state.districtsId[key])
+           
+        }
+            
+    }
     
-    state.districts.En = EnWeatherCard.results
-    return EnWeatherCard;
-}
+});
 
-//creazione della funzione per ottenere il meteo della provincia di Messina
-async function getMeWeather() {
-    const MeWeatherId = getConstantUrl ("2524169");
-    const MeWeatherCard = await getData(MeWeatherId);
+
+//Creazione della funzione che effettua tutte le chiamate fetch una volta caricata la pagina HTML
+async function handleHTMLMounted() {
+    await Promise.all([getAllWeatherDistObject()]);
+    console.log("DISTRICTS",state.districts)
     
-    state.districts.Me = MeWeatherCard.results
-    return MeWeatherCard;
+        
 }
-
-//creazione della funzione per ottenere il meteo della provincia di Palermo
-async function getPaWeather() {
-    const PaWeatherId = getConstantUrl ("2523918");
-    const PaWeatherCard = await getData(PaWeatherId);
-    
-    state.districts.Pa = PaWeatherCard.results
-    return PaWeatherCard;
-}
-
-//creazione della funzione per ottenere il meteo della provincia di Ragusa
-async function getRgWeather() {
-    const RgWeatherId = getConstantUrl ("2523649");
-    const RgWeatherCard = await getData(RgWeatherId);
-    
-    state.districts.Rg = RgWeatherCard.results
-    return RgWeatherCard;
-}
-
-//creazione della funzione per ottenere il meteo della provincia di Siracusa
-async function getSrWeather() {
-    const SrWeatherId = getConstantUrl ("2523082");
-    const SrWeatherCard = await getData(SrWeatherId);
-    
-    state.districts.Sr = SrWeatherCard.results
-    return SrWeatherCard;
-}
-
-//creazione della funzione per ottenere il meteo della provincia di Trapani
-async function getTpWeather() {
-    const TpWeatherId = getConstantUrl ("2522875");
-    const TpWeatherCard = await getData(TpWeatherId);
-    
-    state.districts.Tp = TpWeatherCard.results
-    return TpWeatherCard;
-}
-
+document.addEventListener("DOMContentLoaded",handleHTMLMounted, {
+    once: true
+});
