@@ -1,5 +1,4 @@
-const choosenDistrict = document.querySelector('.choosen_district');
-const districtsCardWrapper = document.querySelector('.district_card_wrapper');
+const districtsCardWrapper = document.querySelector('#DistrictsCardWrapper');
 const districtSelect = document.querySelector('select[name="district-name"]');
 
 const state = {
@@ -86,8 +85,8 @@ function createCard(name, weather) {
     const descriptionCard = document.createElement("p");
     
     cardDistrictName.textContent = name
-    mainWeatherCard.textContent = weather[0].main
-    descriptionCard.textContent = weather[0].description
+    mainWeatherCard.textContent = weather.main
+    descriptionCard.textContent = weather.description
     cardWrapper.classList.add ("district_card_wrapper")
 
 
@@ -100,12 +99,22 @@ function createCard(name, weather) {
 }
 
 //Creazione della funzione render delle card
-function renderWeatherCards(list) {
-    list.forEach((item) => {
-        const meteoCard = createCard (item.name, item[0])  //1° districtsID , 2° districts[name],
-                                    //state.districts.item.name" , state.districts.Ag[0]
-    })
-}
+function renderWeatherCards() {
+    for (const key in state.districts) {
+        const meteoCard = createCard(state.districts[key].name, state.districts[key][0]); 
+        districtsCardWrapper.appendChild(meteoCard)
+        //console.log (state.districts[key][0]) 
+    }
+} 
+
+//Creazione della funzione render solo della provincia selezionata
+function renderWeatherSelectedCard(distrKey) {
+   
+        const meteoCard = createCard(state.districts[distrKey].name, state.districts[distrKey][0]); 
+        districtsCardWrapper.appendChild(meteoCard)
+        console.log (state.districts[distrKey][0]) 
+    
+} 
 
 //Creazione della funzione che salva nello state tutti gli oggetti della chiamata fetch 
 async function getAllWeatherDistObject(){
@@ -118,20 +127,33 @@ async function getAllWeatherDistObject(){
 //Creazione della funzione che, al cambio del valore della select, mi restituisce la chiave weather relativa a ciascuna provincia
 districtSelect.addEventListener('change', (event) => {
     const target = event.target.value
-
-    for (const key in state.districtsId) {
-        if (key===target) {
-            state.districts.key = getWeather(state.districtsId[key])
-           
-        }
-            
+    const allWrapDiv = districtsCardWrapper.querySelectorAll ("div");
+    console.log (allWrapDiv)
+    for (let index = 0; index < allWrapDiv.length; index++) {
+        allWrapDiv[index].remove();
+        
     }
     
+    for (const key in state.districtsId) {
+        if (key===target) {
+            renderWeatherSelectedCard(target)
+           
+        }              
+    }
+
+    if (target==="NDS"){
+        renderWeatherCards()
+    }
+    //console.log(target)
 });
 
 //Creazione della funzione che effettua tutte le chiamate fetch una volta caricata la pagina HTML
 async function handleHTMLMounted() {
-    await Promise.all([getAllWeatherDistObject()]);
+    await Promise.all([getAllWeatherDistObject()]).then (
+        () => {
+            renderWeatherCards() 
+        }
+    )
     console.log("DISTRICTS",state.districts)
     //console.log("WeatherObjectDistrict",state.districts.Ag[0])
     
