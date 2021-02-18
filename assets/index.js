@@ -28,7 +28,8 @@ const state = {
         Rg: "2523649",
         Sr: "2523082",
         Tp: "2522875"
-    }, 
+    },
+    
 }
 
 //creazione della utility per l'URL di base
@@ -38,12 +39,12 @@ function getConstantUrl(cityId) {
 
 //creazione della utility che chiama i dati e gestisce l'errore nel caricamento
 async function getData(url) {
-    const weatherData = [];
+    
     try {
         const response = await fetch (url);
         const result = await response.json();
         state.results = result
-        console.log(state.results)
+        //console.log(state.results)
         if (!response.ok){
             throw result;
         }
@@ -53,22 +54,68 @@ async function getData(url) {
     }
 }
 
-//creazione della funzione utility per ottenere il meteo delle province
+//creazione della funzione utility per ottenere il nome delle province dall'oggetto d'origine
+async function getWeatherName(districtId) { 
+    const WeatherId = getConstantUrl (districtId);
+    const WeatherCard = await getData(WeatherId);
+
+    
+    console.log("name",WeatherCard.name)
+    return WeatherCard.name
+    
+}
+
+//creazione della funzione utility per ottenere il meteo (chiave "weather") delle province
 async function getWeather(districtId) {
     const WeatherId = getConstantUrl (districtId);
     const WeatherCard = await getData(WeatherId);
+
     
-    return WeatherCard;
+    console.log(WeatherCard.weather)
+    return WeatherCard.weather
+    
 }
 
-//Creazione della funzione che restituisce tutti gli oggetti della chiamata fetch (cioè tutti gli oggetti di tutte le province)
+//Creazione delle card del meteo
+function createCard(name, weather) {
+         
+    const cardWrapper = document.createElement("div");
+    const cardDistrictName = document.createElement("h2");
+    const cardWeatherWrapper = document.createElement("div");
+    const mainWeatherCard = document.createElement("h3");
+    const descriptionCard = document.createElement("p");
+    
+    cardDistrictName.textContent = name
+    mainWeatherCard.textContent = weather[0].main
+    descriptionCard.textContent = weather[0].description
+    cardWrapper.classList.add ("district_card_wrapper")
+
+
+    //cardName.classList.add ("")
+    //cardWeatherWrapper.classList.add ("")
+    
+    cardWeatherWrapper.append(mainWeatherCard, descriptionCard );
+    cardWrapper.append(cardDistrictName, cardWeatherWrapper);
+    return cardWrapper;
+}
+
+//Creazione della funzione render delle card
+function renderWeatherCards(list) {
+    list.forEach((item) => {
+        const meteoCard = createCard (item.name, item[0])  //1° districtsID , 2° districts[name],
+                                    //state.districts.item.name" , state.districts.Ag[0]
+    })
+}
+
+//Creazione della funzione che salva nello state tutti gli oggetti della chiamata fetch 
 async function getAllWeatherDistObject(){
     for (const key in state.districtsId) {
-        state.districts[key] = await getWeather(state.districtsId[key])
+        state.districts[key] = await getWeather(state.districtsId[key])  // salva l'oggetto weather
+        state.districts[key].name = await getWeatherName(state.districtsId[key]) //salva il nome del district
     }
 }
 
-//Creazione della funzione che, al cambio del valore della select, mi restituisce l'oggetto relativo a ciascuna provincia
+//Creazione della funzione che, al cambio del valore della select, mi restituisce la chiave weather relativa a ciascuna provincia
 districtSelect.addEventListener('change', (event) => {
     const target = event.target.value
 
@@ -82,11 +129,11 @@ districtSelect.addEventListener('change', (event) => {
     
 });
 
-
 //Creazione della funzione che effettua tutte le chiamate fetch una volta caricata la pagina HTML
 async function handleHTMLMounted() {
     await Promise.all([getAllWeatherDistObject()]);
     console.log("DISTRICTS",state.districts)
+    //console.log("WeatherObjectDistrict",state.districts.Ag[0])
     
         
 }
