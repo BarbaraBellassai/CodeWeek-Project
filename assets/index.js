@@ -85,7 +85,7 @@ async function getWeather(districtId) {
     const WeatherCard = await getData(WeatherId);
 
     
-    console.log(WeatherCard.weather)
+    //console.log(WeatherCard.weather)
     return WeatherCard.weather
     
 }
@@ -210,7 +210,7 @@ function renderWeatherCitiesCards() {
     for (const key in state.cities) {
         const meteoCard = createCityCard(state.cities[key].name, state.cities[key][0]); 
         citiesCardWrapper.appendChild(meteoCard)
-        console.log (state.cities[key][0]) 
+        //console.log (state.cities[key][0]) 
     }
 } 
 
@@ -262,8 +262,8 @@ async function handleHTMLMounted() {
             renderWeatherCitiesCards()
         }
     )
-    console.log("DISTRICTS",state.districts)
-    console.log("Cities", state.cities)
+    //console.log("DISTRICTS",state.districts)
+    //console.log("Cities", state.cities)
     //console.log("WeatherObjectDistrict",state.districts.Ag[0])
     
         

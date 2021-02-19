@@ -13,8 +13,16 @@
         <header>
             <h1>Today's Weather in Sicily</h1>
             <img src="header_img.jpg" class="header_img">
+            <div>
+                <nav>
+                    <ul>
+                        <li><span><a href="#distr_sect">Districts weather forecasts</a></span></li>
+                        <li><span><a href="#cit_sect">Weather forecasts of cities by the sea</a></span></li>
+                    </ul>
+                </nav>
+            </div>
         </header>
-        <h2>Daily updated weather forecasts for every District in Sicily</h2>
+        <h2 id="distr_sect">Daily updated weather forecasts for every District in Sicily</h2>
         <label>Choose a district:
             <select id="district_name" name="district-name" class="select_district" required>
               <option value="NDS" selected>No District Selected</option>
@@ -32,10 +40,10 @@
         <section>
             <div id ="DistrictsCardWrapper" class="districts_card_wrapper"></div>            
         </section>
-        <h2>Weather forecasts for beautiful cities by the sea</h2>
+        <h2 id="cit_sect">Weather forecasts of beautiful cities by the sea</h2>
         <label>Choose a city:
             <select id="city_name" name="city-name" class="select_city" required>
-              <option value="NDS" selected>No city Selected</option>
+              <option value="NDS" selected>No City Selected</option>
               <option value="Ce">Cefalù</option>
               <option value="SvLc">San Vito Lo Capo</option>
               <option value="ScI">Sciacca</option>
