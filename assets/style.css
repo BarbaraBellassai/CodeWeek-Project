@@ -1,0 +1,51 @@
+body{
+    color: #665544;
+    background-color: #d4d0c6;
+    font-family: Georgia, "Times New Roman", serif;
+     
+}
+
+.header_img{
+    display: block;
+    margin: 0px auto;
+    width: 100%;
+    
+}
+
+.districts_card_wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    margin-top: 40px;
+    padding-top: 20px;
+    
+  }
+
+  .card_wrapper{
+    min-width: 260px;
+    max-width: 260px;
+    height: 300px;
+    border: 10px solid #d6d6d6;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-right: 8px;
+    transition: 0.3s ease;   
+    text-align: center; 
+     
+  }
+  
+  .card__wrapper:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 6%);
+  }
+  
+  .card_name{
+      font-size: 19px;
+  }
+
+  .select_district{
+    background-color: #d4d0c6; 
+    color: #665544;
+    font-family: Georgia, "Times New Roman", serif;
+    border-radius: 5px;
+  }

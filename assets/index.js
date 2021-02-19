@@ -81,18 +81,16 @@ function createCard(name, weather) {
     const cardWrapper = document.createElement("div");
     const cardDistrictName = document.createElement("h2");
     const cardWeatherWrapper = document.createElement("div");
-    const mainWeatherCard = document.createElement("h3");
+    const mainWeatherCard = document.createElement("h4");
     const descriptionCard = document.createElement("p");
     
-    cardDistrictName.textContent = name
-    mainWeatherCard.textContent = weather.main
-    descriptionCard.textContent = weather.description
-    cardWrapper.classList.add ("district_card_wrapper")
+    cardDistrictName.textContent = name;
+    mainWeatherCard.textContent = weather.main;
+    descriptionCard.textContent = weather.description;
 
-
-    //cardName.classList.add ("")
-    //cardWeatherWrapper.classList.add ("")
-    
+    cardWrapper.classList.add ("card_wrapper");
+    cardDistrictName.classList.add("card_name");
+        
     cardWeatherWrapper.append(mainWeatherCard, descriptionCard );
     cardWrapper.append(cardDistrictName, cardWeatherWrapper);
     return cardWrapper;
